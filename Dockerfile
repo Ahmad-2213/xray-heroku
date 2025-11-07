@@ -1,17 +1,22 @@
-FROM teddysun/xray
+FROM alpine:3.18
 
-# Set working directory
+# Install dependencies
+RUN apk add --no-cache ca-certificates curl tar
+
+# Create app dir
 WORKDIR /app
+
+# Download xray-core official release (Linux 64-bit)
+RUN curl -L -o xray.tar.gz https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
+    && unzip Xray-linux-64.zip -d /usr/local/bin \
+    && chmod +x /usr/local/bin/xray \
+    && rm Xray-linux-64.zip
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Optional: copy other files in repo into /app (adjust paths as needed)
-# COPY . /app
-
 # Set timezone
 ENV TZ=Asia/Colombo
 
-# Use entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
