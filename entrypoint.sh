@@ -19,7 +19,7 @@ cat << EOF > /tmp/xray/config.json
         ]
       },
       "streamSettings": {
-        "network": "ws"
+        "network": "xhttp"
       }
     }
   ],
