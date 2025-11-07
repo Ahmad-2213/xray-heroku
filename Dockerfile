@@ -1,4 +1,6 @@
 FROM teddysun/xray
+WORKDIR /app
+COPY ..
 ENV TZ=Asia/Colombo
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
