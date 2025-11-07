@@ -1,16 +1,16 @@
 FROM alpine:3.18
 
 # Install dependencies
-RUN apk add --no-cache ca-certificates curl tar
+RUN apk add --no-cache ca-certificates curl unzip
 
 # Create app dir
 WORKDIR /app
 
-# Download xray-core official release (Linux 64-bit)
-RUN curl -L -o xray.tar.gz https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
-    && unzip Xray-linux-64.zip -d /usr/local/bin \
+# Download and extract xray-core
+RUN curl -L -o xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
+    && unzip xray.zip -d /usr/local/bin \
     && chmod +x /usr/local/bin/xray \
-    && rm Xray-linux-64.zip
+    && rm xray.zip
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
