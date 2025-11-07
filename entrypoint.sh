@@ -2,9 +2,9 @@
 
 # Config xray
 
-mkdir -p /app
+mkdir -p /tmp/xray
 rm -f /app/config.json
-cat << EOF > /app/config.json
+cat << EOF > /tmp/xray/config.json
 {
   "inbounds": [
     {
@@ -33,4 +33,4 @@ EOF
 
 # Run xray
 
-xray -c /app/config.json
+xray -c /tmp/xray/config.json
