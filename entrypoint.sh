@@ -1,9 +1,10 @@
 #!/bin/sh
 
-#Config xray
+# Config xray
 
-rm -rf /etc/xray/config.json
-cat << EOF > /etc/xray/config.json
+mkdir -p /app
+rm -f /app/config.json
+cat << EOF > /app/config.json
 {
   "inbounds": [
     {
@@ -30,6 +31,6 @@ cat << EOF > /etc/xray/config.json
 }
 EOF
 
-#run xray
+# Run xray
 
-xray -c /etc/xray/config.json
+xray -c /app/config.json
