@@ -1,0 +1,15 @@
+{
+  "port": 80,
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "cache": false
+  },
+  "docker": {
+    "timezone": "Asia/Colombo"
+  },
+  "args": [
+    "sh",
+    "-c",
+    "/entrypoint.sh"
+  ]
+}
