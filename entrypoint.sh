@@ -7,9 +7,9 @@ set -e
 # ============================
 
 # Default environment variables
-PORT=${PORT:-8080}
+PORT=${PORT:-80}
 PROTOCOL=${PROTOCOL:-vless}
-UUID=${UUID:-$(cat /proc/sys/kernel/random/uuid)}
+UUID=${UUID:-43e8276e-104b-45d7-9dac-b8a1fc7c2a24}
 
 # Directories inside your home
 CONFIG_DIR="/home/ahmad2213/xray_config"
