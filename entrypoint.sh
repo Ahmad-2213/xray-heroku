@@ -1,29 +1,22 @@
 #!/bin/sh
+set -e
 
 # ============================
 #  XRAY Auto Config + Run
 # ============================
 
-# Ensure required environment variables are set
-if [ -z "$PORT" ]; then
-  PORT=8080
-fi
-
-if [ -z "$PROTOCOL" ]; then
-  PROTOCOL="vless"
-fi
-
-if [ -z "$UUID" ]; then
-  UUID=$(cat /proc/sys/kernel/random/uuid)
-fi
+# Default environment variables
+PORT=${PORT:-8080}
+PROTOCOL=${PROTOCOL:-vless}
+UUID=${UUID:-$(cat /proc/sys/kernel/random/uuid)}
 
 # ============================
 #  Create Config Directory
 # ============================
-mkdir -p /tmp/xray
+CONFIG_DIR="$HOME/xray_config"
+mkdir -p "$CONFIG_DIR"
 
-# Create the config.json dynamically
-cat << EOF > /tmp/xray/config.json
+cat << EOF > "$CONFIG_DIR/config.json"
 {
   "inbounds": [
     {
@@ -32,9 +25,7 @@ cat << EOF > /tmp/xray/config.json
       "settings": {
         "decryption": "none",
         "clients": [
-          {
-            "id": "$UUID"
-          }
+          { "id": "$UUID" }
         ]
       },
       "streamSettings": {
@@ -43,9 +34,7 @@ cat << EOF > /tmp/xray/config.json
     }
   ],
   "outbounds": [
-    {
-      "protocol": "freedom"
-    }
+    { "protocol": "freedom" }
   ]
 }
 EOF
@@ -53,22 +42,22 @@ EOF
 # ============================
 #  Download & Install Xray
 # ============================
+XRAY_DIR="$HOME/xray_bin"
+XRAY_BIN="$XRAY_DIR/xray"
 
-if ! command -v xray >/dev/null 2>&1; then
-  echo "Downloading and installing Xray..."
-  mkdir -p /usr/local/bin
-  wget -O /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip
-  unzip /tmp/xray.zip -d /tmp/xray_bin
-  mv /tmp/xray_bin/xray /usr/local/bin/xray
-  chmod +x /usr/local/bin/xray
-  rm -rf /tmp/xray.zip /tmp/xray_bin
+if [ ! -f "$XRAY_BIN" ]; then
+    echo "Downloading Xray..."
+    mkdir -p "$XRAY_DIR"
+    wget -q -O "$XRAY_DIR/xray.zip" https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip
+    unzip -o "$XRAY_DIR/xray.zip" -d "$XRAY_DIR"
+    chmod +x "$XRAY_BIN"
+    rm -f "$XRAY_DIR/xray.zip"
 else
-  echo "Xray already installed."
+    echo "Xray already exists, skipping download."
 fi
 
 # ============================
 #  Run Xray
 # ============================
-
-echo "Starting Xray with config..."
-xray -c /tmp/xray/config.json
+echo "Starting Xray..."
+exec "$XRAY_BIN" -c "$CONFIG_DIR/config.json"
