@@ -3,7 +3,7 @@ set -e
 
 # ============================
 #  XRAY Auto Config + Run
-#  For AlwaysData
+#  AlwaysData Home: /home/ahmad2213
 # ============================
 
 # Default environment variables
@@ -11,9 +11,9 @@ PORT=${PORT:-8080}
 PROTOCOL=${PROTOCOL:-vless}
 UUID=${UUID:-$(cat /proc/sys/kernel/random/uuid)}
 
-# Directories
-CONFIG_DIR="$HOME/xray_config"
-BIN_DIR="$HOME/xray_bin"
+# Directories inside your home
+CONFIG_DIR="/home/ahmad2213/xray_config"
+BIN_DIR="/home/ahmad2213/xray_bin"
 XRAY_BIN="$BIN_DIR/xray"
 
 # ============================
