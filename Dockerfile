@@ -1,22 +1,26 @@
 FROM alpine:3.18
 
 # Install dependencies
-RUN apk add --no-cache ca-certificates curl unzip
+RUN apk add --no-cache ca-certificates curl unzip bash
+
+# Set timezone
+ENV TZ=Asia/Colombo
 
 # Create app dir
 WORKDIR /app
 
-# Download and extract xray-core
-RUN curl -L -o xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
-    && unzip xray.zip -d /usr/local/bin \
+# Download and install xray-core
+RUN curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
+    && unzip -o /tmp/xray.zip -d /tmp/xray \
+    && mv /tmp/xray/xray /usr/local/bin/xray \
     && chmod +x /usr/local/bin/xray \
-    && rm xray.zip
+    && rm -rf /tmp/xray /tmp/xray.zip
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Set timezone
-ENV TZ=Asia/Colombo
+# Expose default port (optional)
+EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
