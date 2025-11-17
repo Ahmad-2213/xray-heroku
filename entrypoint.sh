@@ -7,7 +7,7 @@ set -e
 # ============================
 
 # Default environment variables
-PORT=${PORT:-80}
+PORT=${PORT:-8080}
 PROTOCOL=${PROTOCOL:-vless}
 UUID=${UUID:-43e8276e-104b-45d7-9dac-b8a1fc7c2a24}
 
